@@ -4,6 +4,9 @@ jobs:
   Generate-C4-Diagrams:
     runs-on: ubuntu-latest
     steps:
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}/../../docs
       - name: Generate C1
         uses: university-of-york/generate-c4-model-action@1.0.0
         with:
