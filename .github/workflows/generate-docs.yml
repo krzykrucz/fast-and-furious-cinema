@@ -4,9 +4,8 @@ jobs:
   Generate-C4-Diagrams:
     runs-on: ubuntu-latest
     steps:
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}/../../docs
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Generate C1
         uses: university-of-york/generate-c4-model-action@1.0.0
         with:
@@ -22,3 +21,7 @@ jobs:
         with:
           source-path: docs/c4/c3.dsl
           target-path: docs/c4
+      - name: Commit & Push changes
+        uses: actions-js/push@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
