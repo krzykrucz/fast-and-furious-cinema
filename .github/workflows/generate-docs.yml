@@ -1,0 +1,21 @@
+name: Generate Docs
+on: [push]
+jobs:
+  Generate-C4-Diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate C1
+        uses: university-of-york/generate-c4-model-action@1.0.0
+        with:
+          source-path: docs/c4/c1.dsl
+          target-path: docs/c4
+      - name: Generate C2
+        uses: university-of-york/generate-c4-model-action@1.0.0
+        with:
+          source-path: docs/c4/c2.dsl
+          target-path: docs/c4
+      - name: Generate C3
+        uses: university-of-york/generate-c4-model-action@1.0.0
+        with:
+          source-path: docs/c4/c3.dsl
+          target-path: docs/c4
