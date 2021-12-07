@@ -4,12 +4,12 @@ Architecture is visualized on multiple levels according according to a [C4 Model
 
 ## System context diagram (C1)
 
-![](structurizr-SoftwareSystem-SystemContext.png)
+![](structurizr-SmallCinemaBackend-SystemContext.png)
 
 ## Container diagram (C2)
 
-![](structurizr-SoftwareSystem-Container.png)
+![](structurizr-SmallCinemaBackend-Container.png)
 
 ## Component diagram (C3)
 
-![](structurizr-SoftwareSystem-WebApplication-Component.png)
+![](structurizr-SmallCinemaBackend-SmallCinemaAPI-Component.png)
