@@ -6,20 +6,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Generate C1
+      - name: Generate diagrams
         uses: university-of-york/generate-c4-model-action@1.0.0
         with:
-          source-path: docs/c4/c1.dsl
-          target-path: docs/c4
-      - name: Generate C2
-        uses: university-of-york/generate-c4-model-action@1.0.0
-        with:
-          source-path: docs/c4/c2.dsl
-          target-path: docs/c4
-      - name: Generate C3
-        uses: university-of-york/generate-c4-model-action@1.0.0
-        with:
-          source-path: docs/c4/c3.dsl
+          source-path: docs/c4/architecture.dsl
           target-path: docs/c4
       - name: Push to branch if diagrams changed
         run: |
