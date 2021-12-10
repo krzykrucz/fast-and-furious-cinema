@@ -9,4 +9,6 @@ All architecture-related decisions are made using [Architecture Decision Records
 | 2. | [Inter-module communication](002.md) | 2021-11-06 |
 | 3. | [Language & framework](003.md) | 2021-11-06 |
 | 4. | [In-memory storage](004.md) | 2021-11-06 |
-| 5. | | |
+| 5. | [Testing](005.md) | 2021-11-09 |
+| 6. | [Continuous integration](006.md) | 2021-11-10 |
+| 7. | | |
