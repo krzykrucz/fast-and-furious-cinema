@@ -1,7 +1,7 @@
 package com.krzykrucz.fastfurious.module.ratings
 
+import com.krzykrucz.fastfurious.monolith.IntegrationEvent
 import com.krzykrucz.fastfurious.support.GivenApp
-import com.krzykrucz.fastfurious.eventbus.IntegrationEvent
 import com.krzykrucz.fastfurious.support.KtorModuleTestSupport
 import io.kotest.assertions.ktor.shouldHaveContent
 import io.kotest.assertions.ktor.shouldHaveStatus
@@ -39,7 +39,7 @@ class RatingsSpec : BehaviorSpec({
 
 }
 
-private val ktorSupport = KtorModuleTestSupport(Application::ratingsModule)
+private val ktorSupport = KtorModuleTestSupport(Application::ratingsModule, "")
 
 private fun BehaviorSpec.`Given ratings app`(
     name: String,

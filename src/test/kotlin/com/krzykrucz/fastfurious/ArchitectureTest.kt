@@ -18,7 +18,7 @@ class ArchitectureTest : FreeSpec({
     }
 
     "event bus should not depend on anything" {
-        noClasses().that().resideInAPackage("..eventbus..")
+        noClasses().that().resideInAPackage("..monolith..")
             .should().dependOnClassesThat().resideInAPackage("..module..")
             .check(rootPackageClasses)
     }

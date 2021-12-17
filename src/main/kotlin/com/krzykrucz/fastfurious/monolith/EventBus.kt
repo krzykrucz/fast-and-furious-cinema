@@ -1,5 +1,8 @@
-package com.krzykrucz.fastfurious.eventbus
+package com.krzykrucz.fastfurious.monolith
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import io.ktor.application.Application
 import io.ktor.application.ApplicationEvents
 import io.ktor.application.EventDefinition
@@ -18,17 +21,25 @@ fun <T : IntegrationEvent> Application.subscribeOn(definition: EventDefinition<T
             try {
                 handle(event)
             } catch (error: Throwable) {
-                log.error("Error handling event $definition with id: ${event.id}")
+                log.error("Error handling event $definition with id: ${event.id}", error)
             }
         }
     }
 
-suspend fun <T : IntegrationEvent> ApplicationEvents.publishAsync(definition: EventDefinition<T>, event: T) {
-    coroutineScope {
-        launch(IO) {
-            raise(definition, event)
+suspend fun <T : IntegrationEvent> ApplicationEvents.publishAsync(
+    definition: EventDefinition<T>,
+    event: T
+): Either<Throwable, Unit> =
+    try {
+        coroutineScope {
+            launch(IO) {
+                raise(definition, event)
+            }
         }
+        Unit.right()
+    } catch (error: Throwable) {
+        log.error("Error publishing event $definition with id: ${event.id}", error)
+        error.left()
     }
-}
 
 private val log = LoggerFactory.getLogger("EventBus")
