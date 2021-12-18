@@ -4,6 +4,7 @@ import com.krzykrucz.fastfurious.monolith.IntegrationEvent.MovieAddedToCatalogEv
 import com.krzykrucz.fastfurious.monolith.IntegrationEvent.MovieRatedEvent
 import com.krzykrucz.fastfurious.monolith.subscribeOn
 import io.ktor.application.Application
+import io.ktor.routing.get
 import io.ktor.routing.routing
 
 fun Application.movieDetailsModule() {
@@ -16,6 +17,8 @@ fun Application.movieDetailsModule() {
 
 
     routing {
+        get("/details") {
 
+        }
     }
 }

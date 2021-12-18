@@ -24,10 +24,10 @@ fun main() {
             json()
         }
 
-        catalogModule(environment.name)
-        showtimesModule()
-        ratingsModule(environment.name)
         movieDetailsModule()
+        ratingsModule(environment.name)
+        showtimesModule()
+        catalogModule(environment.name)
 
     }.start(wait = true)
 }

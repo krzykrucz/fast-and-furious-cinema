@@ -43,6 +43,7 @@ dependencies {
     testImplementation("io.kotest.extensions:kotest-assertions-ktor:$kotest_extensions_version")
     testImplementation("io.kotest.extensions:kotest-extensions-wiremock:$kotest_extensions_version")
     testImplementation("com.tngtech.archunit:archunit:0.22.0")
+    testImplementation("io.mockk:mockk:1.12.1")
 }
 
 tasks.withType<Test> {

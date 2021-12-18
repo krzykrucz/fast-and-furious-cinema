@@ -23,8 +23,12 @@ sealed class IntegrationEvent {
         companion object : EventDefinition<MovieAddedToCatalogEvent>()
     }
 
-    data class MovieRatedEvent(override val id: String) : IntegrationEvent() {
+    data class MovieRatedEvent(
+        override val id: String,
+        val movieId: String,
+        val averageRatingChange: Double,
+        val timestamp: Instant
+    ) : IntegrationEvent() {
         companion object : EventDefinition<MovieRatedEvent>()
-
     }
 }

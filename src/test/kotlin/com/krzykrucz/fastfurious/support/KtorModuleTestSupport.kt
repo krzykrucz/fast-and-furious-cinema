@@ -6,10 +6,13 @@ import io.kotest.assertions.timing.eventually
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.isRootTest
+import io.kotest.matchers.collections.beEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.should
 import io.ktor.application.Application
 import io.ktor.application.EventDefinition
+import kotlinx.coroutines.delay
 import java.util.Collections
 import kotlin.time.Duration.Companion.seconds
 
@@ -47,5 +50,10 @@ class KtorModuleTestSupport<C>(
         eventually(5.seconds) {
             consumedEvents.shouldContainExactlyInAnyOrder(*events)
         }
+    }
+
+    suspend fun noEventsShouldBePublished() {
+        delay(300)
+        consumedEvents should beEmpty()
     }
 }
