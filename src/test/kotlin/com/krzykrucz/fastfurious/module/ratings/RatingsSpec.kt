@@ -41,7 +41,8 @@ class RatingsSpec : BehaviorSpec({
                     IntegrationEvent.MovieRatedEvent(
                         id = firstUUID.toString(),
                         movieId = someMovieId,
-                        averageRatingChange = 10.0,
+                        newAverageRating = 10.0,
+                        newVotesCount = 1,
                         timestamp = currentTime
                     )
                 )
@@ -58,7 +59,8 @@ class RatingsSpec : BehaviorSpec({
                     IntegrationEvent.MovieRatedEvent(
                         id = secondUUID.toString(),
                         movieId = someMovieId,
-                        averageRatingChange = -2.5,
+                        newAverageRating = 7.5,
+                        newVotesCount = 2,
                         timestamp = currentTime
                     )
                 )

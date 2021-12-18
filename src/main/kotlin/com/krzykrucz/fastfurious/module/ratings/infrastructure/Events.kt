@@ -15,7 +15,8 @@ fun publishEvent(events: ApplicationEvents, uuidProvider: UUIDProvider): Publish
     val integrationEvent = IntegrationEvent.MovieRatedEvent(
         id = uuidProvider().toString(),
         movieId = event.movieId.value,
-        averageRatingChange = event.ratingChange,
+        newAverageRating = event.newCinemaMovieRating.rating.average.value,
+        newVotesCount = event.newCinemaMovieRating.rating.votes.value,
         timestamp = event.timestamp
     )
     events.publishAsync(IntegrationEvent.MovieRatedEvent, integrationEvent)

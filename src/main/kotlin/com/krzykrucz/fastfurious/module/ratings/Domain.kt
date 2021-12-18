@@ -15,7 +15,7 @@ val createCinemaMovieRating: CreateMovieRating = { newMovie ->
 typealias RateMovie = (Clock, CurrentCinemaMovieRating, MoviegoerRating) -> MovieRatedEvent
 
 val rateMovie: RateMovie = { clock, currentMovieRating, moviegoerRating ->
-    val createEvent = ::createEvent.partially1(clock).partially1(currentMovieRating)
+    val createEvent = ::createEvent.partially1(clock)
 
     applyMoviegoerRating(currentMovieRating, moviegoerRating)
         .let { createEvent(it) }
@@ -36,12 +36,10 @@ private fun applyMoviegoerRating(
 
 private fun createEvent(
     clock: Clock,
-    oldMovieRating: CurrentCinemaMovieRating,
     newCinemaMovieRating: NewCinemaMovieRating
 ): MovieRatedEvent =
     MovieRatedEvent(
         movieId = newCinemaMovieRating.rating.movieId,
-        ratingChange = newCinemaMovieRating.rating.average - oldMovieRating.rating.average,
         timestamp = clock.instant(),
         newCinemaMovieRating = newCinemaMovieRating
     )
@@ -60,7 +58,6 @@ value class NewCinemaMovieRating(val rating: CinemaMovieRating)
 
 data class MovieRatedEvent(
     val movieId: MovieId,
-    val ratingChange: Double,
     val timestamp: Instant,
     val newCinemaMovieRating: NewCinemaMovieRating
 )
@@ -80,8 +77,6 @@ value class MovieId private constructor(val value: String) {
 
 @JvmInline
 value class AverageRating private constructor(val value: Double) {
-
-    operator fun minus(another: AverageRating) = value - another.value
 
     companion object {
         operator fun invoke(rating: Double): AverageRating? =

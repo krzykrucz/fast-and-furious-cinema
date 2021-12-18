@@ -14,7 +14,7 @@ val findMovieRating: FindMovieRating = { movieId ->
 
 typealias PersistMovieRating = suspend (CinemaMovieRating) -> Unit
 
-val persistMovieRating: PersistMovieRating = { movieRating ->
+val persistMovieRating: PersistMovieRating = { movieRating -> // TODO optimistic locking
     cinemaMovieRatingsDb[movieRating.movieId] = movieRating
 }
 

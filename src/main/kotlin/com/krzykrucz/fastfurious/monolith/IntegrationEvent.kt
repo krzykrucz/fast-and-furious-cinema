@@ -26,7 +26,8 @@ sealed class IntegrationEvent {
     data class MovieRatedEvent(
         override val id: String,
         val movieId: String,
-        val averageRatingChange: Double,
+        val newAverageRating: Double,
+        val newVotesCount: Int,
         val timestamp: Instant
     ) : IntegrationEvent() {
         companion object : EventDefinition<MovieRatedEvent>()

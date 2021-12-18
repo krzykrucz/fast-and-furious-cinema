@@ -7,9 +7,7 @@ import com.krzykrucz.fastfurious.module.showtimes.showtimesModule
 import com.krzykrucz.fastfurious.monolith.name
 import io.ktor.application.install
 import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
 import io.ktor.request.path
-import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import org.slf4j.event.Level
@@ -20,11 +18,8 @@ fun main() {
             level = Level.INFO
             filter { call -> call.request.path().startsWith("/") }
         }
-        install(ContentNegotiation) {
-            json()
-        }
 
-        movieDetailsModule()
+        movieDetailsModule(environment.name)
         ratingsModule(environment.name)
         showtimesModule()
         catalogModule(environment.name)
