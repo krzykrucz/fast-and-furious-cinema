@@ -83,7 +83,7 @@ class RatingsSpec : BehaviorSpec({
 
             Then("response status is 5xx") {
                 response shouldHaveStatus HttpStatusCode.InternalServerError
-                response shouldHaveContent "Error"
+                response shouldHaveContent "NoSuchMovie"
             }
             Then("no events are published") {
                 ktor.noEventsShouldBePublished()

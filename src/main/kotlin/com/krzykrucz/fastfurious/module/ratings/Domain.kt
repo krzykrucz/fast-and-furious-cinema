@@ -102,12 +102,14 @@ enum class MoviegoerRating {
 @JvmInline
 value class Votes private constructor(val value: Int) {
 
-    operator fun plus(votes: Int) = Votes(value + votes)
+    operator fun plus(votes: Int) = invoke(value + votes)
+    operator fun minus(votes: Int) = invoke(value - votes)
 
     companion object {
-        operator fun invoke(votes: Int): Votes? =
+        operator fun invoke(votes: Int): Votes =
             votes.takeIf { it > 0 }
                 ?.let(::Votes)
+                ?: zero
 
         val zero = Votes(0)
     }

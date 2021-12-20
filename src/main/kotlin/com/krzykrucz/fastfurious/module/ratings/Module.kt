@@ -1,13 +1,16 @@
 package com.krzykrucz.fastfurious.module.ratings
 
+import arrow.core.flatMap
 import arrow.core.partially1
-import com.krzykrucz.fastfurious.module.ratings.infrastructure.findMovieRating
-import com.krzykrucz.fastfurious.module.ratings.infrastructure.persistMovieRating
+import com.krzykrucz.fastfurious.module.ratings.infrastructure.PersistenceFailure.OptimisticLockViolated
+import com.krzykrucz.fastfurious.module.ratings.infrastructure.findCinemaMovieRating
+import com.krzykrucz.fastfurious.module.ratings.infrastructure.persistCinemaMovieRating
 import com.krzykrucz.fastfurious.module.ratings.infrastructure.publishEvent
 import com.krzykrucz.fastfurious.monolith.EnvironmentName
 import com.krzykrucz.fastfurious.monolith.EnvironmentName.LOCAL
 import com.krzykrucz.fastfurious.monolith.IntegrationEvent.MovieAddedToCatalogEvent
 import com.krzykrucz.fastfurious.monolith.events
+import com.krzykrucz.fastfurious.monolith.publishAsync
 import com.krzykrucz.fastfurious.monolith.subscribeOn
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -24,10 +27,11 @@ fun Application.ratingsModule(
     val publishEvent = publishEvent(events, uuidProvider)
     val rateMovie = rateMovie.partially1(clock)
 
-    subscribeOn(MovieAddedToCatalogEvent) {
-        val newMovie = NewMovie(MovieId(it.id)!!)
+    subscribeOn(MovieAddedToCatalogEvent) { event ->
+        val newMovie = NewMovie(MovieId(event.id)!!)
         val movieRating = createCinemaMovieRating(newMovie)
-        persistMovieRating(movieRating)
+        persistCinemaMovieRating(movieRating)
+            .tapLeft { if (it == OptimisticLockViolated) events.publishAsync(MovieAddedToCatalogEvent, event) }
     }
 
     routing {
@@ -40,12 +44,13 @@ fun Application.ratingsModule(
                     ?.let(MovieId::invoke)
                     ?: return@post call.respond(HttpStatusCode.BadRequest, "movie id param is invalid")
 
-            findMovieRating(movieId)
-                ?.let { rateMovie(it, moviegoerRating) }
-                ?.also { persistMovieRating(it.newCinemaMovieRating.rating) }
-                ?.let { publishEvent(it) }
-                ?.let { call.respond(HttpStatusCode.OK, "Your rating is counted!") }
-                ?: let { call.respond(HttpStatusCode.InternalServerError, "Error") }
+            findCinemaMovieRating(movieId)
+                .map { cinemaRating -> rateMovie(cinemaRating, moviegoerRating) }
+                .flatMap { event -> persistCinemaMovieRating(event.newCinemaMovieRating.rating).map { it to event } }
+                .map { (_, event) -> publishEvent(event) }
+                .fold(
+                    { call.respond(HttpStatusCode.InternalServerError, it.name) },
+                    { call.respond(HttpStatusCode.OK, "Your rating is counted!") })
         }
     }
 }
