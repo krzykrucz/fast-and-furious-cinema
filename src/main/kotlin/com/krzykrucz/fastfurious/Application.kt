@@ -21,7 +21,7 @@ fun main() {
 
         movieDetailsModule(environment.name)
         ratingsModule(environment.name)
-        showtimesModule()
+        showtimesModule(environment.name)
         catalogModule(environment.name)
 
     }.start(wait = true)

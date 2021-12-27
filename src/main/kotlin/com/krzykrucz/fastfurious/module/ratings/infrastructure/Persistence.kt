@@ -34,6 +34,8 @@ val persistCinemaMovieRating: PersistCinemaMovieRating = { movieRating ->
             movieRating -> Unit.right()
             else -> PersistenceFailure.OptimisticLockViolated.left()
         }
+    } catch (concurrencyError: ConcurrentModificationException) {
+        PersistenceFailure.OptimisticLockViolated.left()
     } catch (error: Throwable) {
         PersistenceFailure.Unknown.left()
     }
